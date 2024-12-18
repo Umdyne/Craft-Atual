@@ -1,22 +1,21 @@
 <template>
     <v-app>
         <layout-default-header></layout-default-header>
-        <pre>{{ usuario }}
+        <!-- <pre>
             {{ lojas }}
-        </pre>
-        <v-main class="bg-cor_fundo">
+        </pre> -->
+        <v-main class="bg-cor_fundo ">
             <v-container class="justify-center  h-100">
-                <v-btn class="bg-transparent elevation-0">
-                    Voltar
-                </v-btn>
-                <v-row class="justify-center ">
-                    <v-col cols="3">
+                <layout-go-back></layout-go-back>
+                <v-row v-if="usuario" class="justify-center ">
+                    
+                    <v-col class="justify-center" cols="3">
 
                     
                     <v-img
-                        src="/img/girl.jpeg"
-                        max-height="200"
-                        max-width="200"
+                        :src="usuario.foto"
+                        height="200"
+                        width="200"
                         class="rounded-circle ml-n5 mb-5"
                         aspect-ratio="1/1"
                         cover
@@ -24,8 +23,8 @@
                         
                     </v-img>
 
-                        <p class="text-black my-2 text-h5">
-                        Nome_Usuário
+                        <p class="text-black ml-10  my-2 text-h5">
+                            {{ usuario.name }}
                         </p>
                         <v-btn color="cor_marron_claro my-5" class="rounded-xl elevation-10">
                             Editar Perfil
@@ -46,18 +45,18 @@
                     max-width="1000"
                 >
                     <v-container fluid>
-                    <v-row dense>
-                        <v-col
-                        v-for="card in cards"
-                        :key="card.title"
-                        :cols="card.flex"
+                    <v-row v-if="lojas" dense>
+                        <v-col 
+                        v-for="loja in lojas"
+                        :key="loja.id"
+                        cols="2"
                         >
-                        <v-btn class="rounded-circle" height="150" width="150">
+                        <v-btn :href="`/loja-${loja.id}`" class="rounded-circle" height="150" width="150">
 
                         
-                        <v-card class="rounded-circle ">
+                        <v-card  class="rounded-circle ">
                             <v-img 
-                            :src="card.src"
+                            :src="loja.foto"
                             class="align-center "
                             gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
                             height="150px"
@@ -65,12 +64,37 @@
                             
                             cover
                             >
-                            <v-card-title class=" text-center text-cor_fundo text-h5 mt-5 " v-text="card.title"></v-card-title>
+                            <v-card-title class=" text-center text-cor_fundo text-h5 mt-5 " v-text="loja.name"></v-card-title>
                             </v-img>
 
                 
                         </v-card>
-                    </v-btn>
+                         </v-btn>
+                        </v-col>
+
+                        <v-col 
+                       
+                        cols="2"
+                        >
+                        <v-btn :href="`/add_loja`" class="rounded-circle" height="150" width="150">
+
+                        
+                        <v-card  class="rounded-circle ">
+                            <v-img 
+                            src="../img/add_loja.png"
+                            class="align-center "
+                            gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                            height="150px"
+                            width="150px"
+                            
+                            cover
+                            >
+                            
+                            </v-img>
+
+                
+                        </v-card>
+                         </v-btn>
                         </v-col>
                     </v-row>
                     </v-container>

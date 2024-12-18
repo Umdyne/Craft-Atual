@@ -1,16 +1,8 @@
-// import this after install `@mdi/font` package
-import '@mdi/font/css/materialdesignicons.css'
+import '@mdi/font/css/materialdesignicons.css';
+import 'vuetify/styles';
+import { createVuetify } from 'vuetify';
 
-import 'vuetify/styles'
-import { createVuetify } from 'vuetify'
-
-export default defineNuxtPlugin((app) => {
-  const vuetify = createVuetify({
-    // ... your configuration
-  })
-  app.vueApp.use(vuetify)
-})
-
+// Defina seu tema personalizado
 const customTheme = {
   dark: false,
   colors: {
@@ -33,3 +25,19 @@ const customTheme = {
     
   },
 };
+
+export default defineNuxtPlugin((nuxtApp) => {
+  const vuetify = createVuetify({
+    theme: {
+      defaultTheme: 'customTheme',
+      themes: {
+        customTheme,
+      },
+    },
+    icons: {
+      defaultSet: 'mdi',
+    },
+  });
+
+  nuxtApp.vueApp.use(vuetify);
+});

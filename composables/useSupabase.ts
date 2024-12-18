@@ -53,6 +53,131 @@ export class useSupabase {
     return data;
   }
 
+  async getLojasC(id: string): Promise<boolean> {
+    const { data, error } = await this.supabase
+      .from('stores')
+      .select('*.*')
+      .eq('categorie', id)
+      ;
+
+    if (error) {
+      console.error(error);
+      return false;
+    }
+
+    return data;
+  }
+
+  async getLoja(id: any): Promise<boolean> {
+    const { data, error } = await this.supabase
+      .from('stores')
+      .select('*.*')
+      .eq('id', id)
+      .single()
+      ;
+
+    if (error) {
+      console.error(error);
+      return false;
+    }
+
+    return data;
+  }
+
+  async getProdutos(id: any): Promise<boolean> {
+    const { data, error } = await this.supabase
+      .from('product')
+      .select('*.*')
+      .eq('loja', id)
+      ;
+
+    if (error) {
+      console.error(error);
+      return false;
+    }
+
+    return data;
+  }
+
+  async searchProdutos(criteria: { name?: string; categorie?: number}): Promise<any[]> {
+    const query = this.supabase.from('product').select('*.*');
+  
+    // Adicionar filtros dinamicamente
+    if (criteria.name) {
+      query.ilike('name', `%${criteria.name}%`); // Busca pelo nome (case insensitive)
+    }
+    if (criteria.categorie) {
+      query.eq('categorie', criteria.categorie); // Filtrar por categoria
+    }
+    
+  
+    const { data, error } = await query;
+  
+    if (error) {
+      console.error(error);
+      return [];
+    }
+  
+    return data || [];
+  }
+
+  async getCategorias(): Promise<boolean> {
+    const { data, error } = await this.supabase
+      .from('categories')
+      .select('*.*')
+      
+      ;
+
+    if (error) {
+      console.error(error);
+      return false;
+    }
+
+    return data;
+  }
+
+  async createStore(name: string, categorie: string, contact: string, description: string, user: string): Promise<boolean> {
+    try {
+      const { data, error } = await this.supabase
+        .from('stores') // Tabela de Lojas
+        .insert([{name, categorie, contact, description, user }]); // Inserindo os dados
+  
+      if (error) {
+        console.error('Erro ao criar Loja:', error);
+        return false; // Indica falha
+      }
+  
+      console.log('Loja criada com sucesso:', data);
+      return true; // Indica sucesso
+    } catch (error) {
+      console.error('Erro inesperado ao criar loja:', error);
+      return false; // Indica falha
+    }
+  }
+
+  async searchLojas(criteria: { name?: string; categorie?: number }): Promise<any[]> {
+    const query = this.supabase.from('stores').select('*.*');
+  
+    // Adicionar filtros dinamicamente
+    if (criteria.name) {
+      query.ilike('name', `%${criteria.name}%`); // Busca pelo nome (case insensitive)
+    }
+    if (criteria.categorie) {
+      query.eq('categorie', criteria.categorie); // Filtrar por categoria
+    }
+  
+    const { data, error } = await query;
+  
+    if (error) {
+      console.error(error);
+      return [];
+    }
+  
+    return data || [];
+  }
+  
+
+
   async createUser(name: string, username: string, email: string, password: string): Promise<boolean> {
     try {
       const { data, error } = await this.supabase
@@ -72,51 +197,5 @@ export class useSupabase {
     }
   }
   
-  
-//   async signUp(email: string, password: string): Promise<Session | null> {
-//     try {
-//       const { error, data } = await this.supabase.auth.signUp({
-//         email,
-//         password,
-//       });
-//       if (error) throw error;
-//       return data?.session ?? null;
-//     } catch (error) {
-//       console.error(error);
-//       return null;
-//     }
-//   }
 
-//   async signIn(email: string, password: string): Promise<Session | null> {
-//     try {
-//       const { error, data } = await this.supabase.auth.signInWithPassword({
-//         email,
-//         password,
-//       });
-//       if (error) throw error;
-//       return data?.session ?? null;
-//     } catch (error) {
-//       console.error(error);
-//       return null;
-//     }
-//   }
-
-//   async signOut(): Promise<void> {
-//     try {
-//       await this.supabase.auth.signOut();
-//     } catch (error) {
-//       console.error(error);
-//     }
-//   }
-
-//   async getSession(): Promise<Session | null> {
-//     try {
-//       const { data, error } = await this.supabase.auth.getSession();
-//       if (error) throw error;
-//       return data?.session ?? null;
-//     } catch (error) {
-//       console.error(error);
-//       return null;
-//     }
-//   }
 }
