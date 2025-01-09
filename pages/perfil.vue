@@ -4,7 +4,7 @@
         <!-- <pre>
             {{ lojas }}
         </pre> -->
-        <v-main class="bg-cor_fundo ">
+        <v-main class="bg-red ">
             <v-container class="justify-center  h-100">
                 <layout-go-back></layout-go-back>
                 <v-row v-if="usuario" class="justify-center ">
