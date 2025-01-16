@@ -5,8 +5,8 @@
             <v-container class="justify-center  h-100">
                 
                 <layout-go-back></layout-go-back>
-                <v-row class="justify-center ">
-                    <v-col cols="6">
+                <v-row class="justify-center d-flex ">
+                    <v-col cols="12">
 
                 
                         <v-img
@@ -29,6 +29,7 @@
                         v-for="card in cards"
                         :key="card.title"
                         :cols="card.flex"
+                        
                         >
                         <v-btn class="rounded-circle bg-transparent elevation-0" height="180" width="150">
 
@@ -63,7 +64,11 @@
                         <v-col 
                         v-for="loja in lojas"
                         :key="loja.id"
-                        cols="2"
+                        
+                        cols="6"
+                        md="3"
+                        sm="4"
+                        lg="2"
                         >
                         <v-btn :href="`/loja-${loja.id}`" class="rounded-circle" height="150" width="150">
 

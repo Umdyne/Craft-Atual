@@ -44,44 +44,48 @@
             </v-card>
           </v-row>
   
-          <v-card class="mx-auto bg-transparent elevation-0" max-width="1000">
+          <v-card class="mx-auto h-auto  bg-black elevation-0" max-width="1000">
             <v-container fluid>
-              <v-row v-if="products" dense>
-                <v-col v-for="product in products" :key="product.id" cols="4">
+              <v-row v-if="products" dense class="bg-red h-100">
+                <v-col v-for="product in products" :key="product.id" cols="12"
+                        md="4"
+                        sm="6"
+                        lg="4"
+                        class="bg-green">
                   
                   <store-product :loja="loja" :product="product"> 
-                    <v-btn class="my-2 mx-n2" height="300" width="300">
+                    <v-btn class=" w-100 h-100  bg-blue" >
                     <v-card class="rounded-sm">
-                      <v-img
+                      <img
                         :src="product.foto"
-                        class="align-center"
-                        height="300"
-                        width="300"
+                        class="align-center bg-gray" 
+                        width="100%"
                         cover
-                      >
-                        <v-card-title
+                      />
+                       
+                      
+                      <v-card-title
                           class="text-center text-cor_fundo text-h5 mt-5"
                           v-text="product.nome"
                         ></v-card-title>
-                      </v-img>
                     </v-card>
                   </v-btn>
                   
                   </store-product>
                 </v-col>
-                <v-col  cols="4">
-                  <v-btn class="bg-transparent elevation-0" :ripple="false" href="/add_produto">
+                <v-col  cols="12"
+                        md="4"
+                        sm="6"
+                        lg="4">
+                  <v-btn class="bg-black elevation-0 " :ripple="false" href="/add_produto">
 
-                    <v-img
+                    <img
                         src="../img/add_loja.png"
                         class="align-center"
-                        height="300"
-                        width="300"
+                        width="100%"
                         cover
                         
-                      >
-                      
-                      </v-img>
+                      />
                   </v-btn>
                  
                       

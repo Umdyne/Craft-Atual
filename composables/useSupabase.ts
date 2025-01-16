@@ -178,24 +178,40 @@ export class useSupabase {
   
 
 
-  async createUser(name: string, username: string, email: string, password: string): Promise<boolean> {
+  async createUser(
+    name: string,
+    username: string,
+    email: string,
+    password: string
+  ): Promise<{ success: boolean; message: string }> {
     try {
       const { data, error } = await this.supabase
         .from('users') // Tabela de usuários
-        .insert([{name, username, email, password }]); // Inserindo os dados
-  
+        .insert([{ name, username, email, password }]); // Inserindo os dados
+
       if (error) {
+        // Verifica se o erro é relacionado a duplicação de chave única
+        if (
+          error.message.includes('duplicate key') ||
+          error.message.toLowerCase().includes('already exists')
+        ) {
+          return {
+            success: false,
+            message: 'Já existe um usuário com este e-mail ou username.',
+          };
+        }
+
         console.error('Erro ao criar usuário:', error);
-        return false; // Indica falha
+        return { success: false, message: 'Erro ao criar usuário.' };
       }
-  
+
       console.log('Usuário criado com sucesso:', data);
-      return true; // Indica sucesso
+      return { success: true, message: 'Usuário criado com sucesso!' };
     } catch (error) {
       console.error('Erro inesperado ao criar usuário:', error);
-      return false; // Indica falha
+      return { success: false, message: 'Erro inesperado ao criar usuário.' };
     }
   }
+}
   
 
-}

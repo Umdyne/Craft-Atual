@@ -1,10 +1,31 @@
 <template>
   <v-app class="bg-cor_fundo ">
    
-    <v-container fluid fill-height class="d-flex justify-center align-center h-100">
-      <v-card class="d-flex align-center justify-center " height="25vw" width="50vw">
-        <v-row no-gutters class="w-100 h-100">
-          <v-col cols="6" class="d-flex align-center justify-center ">
+    <v-container fluid fill-height class=" d-flex justify-center align-center h-100 ">
+      <v-card class="d-flex align-center justify-center   w-100 w-md-50" >
+        <v-row no-gutters class="bg-cor_fundo elevation-0 flat  ">
+          <v-col
+            cols="12" md="6"        
+                  
+            class="d-flex align-center justify-center bg-transparent"
+          >
+          
+            <img
+              class=" w-100 bg-transparent"
+              src="/img/logo_hd.png"
+              
+              contain  
+              v-if="mdAndUp"        
+            />
+            <img
+              class="w-25"
+              src="/img/logo_hd.png"
+              style="border-radius: 100%"
+              contain  
+              v-else    
+            />
+          </v-col>
+          <v-col cols="12" md="6" class="d-flex align-center justify-center" min-width="50%">
             <v-card class="bg-cor_card_login  justify-center" height="100%" width="100%">
               <v-card-text class="text-center text-h5 font-weight-light mt-10">
                   OLÁ, FAÇA SEU LOGIN!
@@ -21,14 +42,7 @@
               </v-btn>
             </v-card>
           </v-col>
-          <v-col cols="6" class="d-flex align-center justify-center">
-            <v-img
-              class=""
-              src="/img/logo_hd.png"
-              height="470"
-              cover
-            />
-          </v-col>
+          
         </v-row>
       </v-card>
     </v-container>
@@ -37,12 +51,14 @@
 
 <script setup lang="ts"> 
 import { useSupabase } from '~/composables/useSupabase';
+import { useDisplay } from 'vuetify';
 
 const username = ref(''); 
 const password = ref(''); 
 const supabase = new useSupabase();
 const userId = ref();
 const router = useRouter();
+const{mdAndUp} = useDisplay();
 
 async function login() {
 try {

@@ -11,7 +11,10 @@
           <v-container fluid>
             <v-row dense>
               <v-col
-                cols="4"
+              cols="12"
+                        md="4"
+                        sm="6"
+                        lg="4"
                 v-for="categoria in categorias"
                 :key="categoria.id"
               >

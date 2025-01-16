@@ -9,26 +9,28 @@
                 <layout-go-back></layout-go-back>
                 <v-row v-if="usuario" class="justify-center ">
                     
-                    <v-col class="justify-center" cols="3">
+                    <v-col class="justify-center d-flex" cols="12" md="3">
 
-                    
-                    <v-img
+                    <div>
+                        <v-img
                         :src="usuario.foto"
                         height="200"
                         width="200"
-                        class="rounded-circle ml-n5 mb-5"
+                        class="rounded-circle  mb-5"
                         aspect-ratio="1/1"
                         cover
                         >
                         
                     </v-img>
 
-                        <p class="text-black ml-10  my-2 text-h5">
+                        <p class="text-black text-center my-2 text-h5">
                             {{ usuario.name }}
                         </p>
-                        <v-btn color="cor_marron_claro my-5" class="rounded-xl elevation-10">
+                        <v-btn color="cor_marron_claro my-5" class="mx-auto rounded-xl justify-center elevation-10">
                             Editar Perfil
                     </v-btn>
+                    </div>
+                   
                     </v-col>
                 </v-row>
                 <v-divider
@@ -49,7 +51,10 @@
                         <v-col 
                         v-for="loja in lojas"
                         :key="loja.id"
-                        cols="2"
+                        cols="6"
+                        md="3"
+                        sm="4"
+                        lg="2"
                         >
                         <v-btn :href="`/loja-${loja.id}`" class="rounded-circle" height="150" width="150">
 
@@ -74,7 +79,10 @@
 
                         <v-col 
                        
-                        cols="2"
+                        cols="6"
+                        md="3"
+                        sm="4"
+                        lg="2"
                         >
                         <v-btn :href="`/add_loja`" class="rounded-circle" height="150" width="150">
 
