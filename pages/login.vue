@@ -2,16 +2,16 @@
   <v-app class="bg-cor_fundo ">
    
     <v-container fluid fill-height class=" d-flex justify-center align-center h-100 ">
-      <v-card class="d-flex align-center justify-center   w-100 w-md-50" >
-        <v-row no-gutters class="bg-cor_fundo elevation-0 flat  ">
+      <v-card class="d-flex align-center justify-center   w-100 w-md-50 flat elevation-0" >
+        <v-row no-gutters class="bg-cor_fundo elevation-0 flat   ">
           <v-col
             cols="12" md="6"        
                   
-            class="d-flex align-center justify-center bg-transparent"
+            class="d-flex align-center justify-center bg-transparent "
           >
           
             <img
-              class=" w-100 bg-transparent"
+              class=" w-100 bg-transparent flat elevation-0"
               src="/img/logo_hd.png"
               
               contain  
