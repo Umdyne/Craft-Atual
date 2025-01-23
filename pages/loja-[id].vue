@@ -3,9 +3,8 @@
     <layout-default-header></layout-default-header>
     <v-main class="bg-cor_fundo">
       <v-container class="justify-center h-100">
-       
-       <layout-go-back></layout-go-back>
-        <v-row class="justify-center mt-5" v-if="loja">
+        <layout-go-back></layout-go-back>
+        <v-row class="justify-center mt-5" v-if="loja && loja.name">
           <v-col cols="3">
             <v-img
               :src="loja.foto"
@@ -15,42 +14,44 @@
               aspect-ratio="1/1"
               cover
             ></v-img>
-            
           </v-col>
           <v-col cols="9">
             <p class="text-black text-h3">{{ loja.name }}</p>
             <p class="text-black text-h5 mb-5">{{ loja.description }}</p>
-            
             <p class="text-black mt-5 text-h6">{{ loja.contact }}</p>
             <p class="text-black text-h6">{{ loja.location }}</p>
-            
-            <p class="">Artista:  </p>
+            <p class="">Artista: </p>
             <p class="font-weight-bold mt-n1">{{ loja.socialWeb }}</p>
-
             <v-btn class="bg-transparent mx-n5 elevation-0">
               Editar Loja
             </v-btn>
           </v-col>
         </v-row>
-        <v-row class="justify-center mb-10" v-if="loja">
+        <v-row class="justify-center mb-10" v-if="loja && loja.aboutMe">
           <v-card class="bg-cor_card_login rounded-xl" height="150" width="700">
             <v-card-title class="text-center text-cor_fundo">
               Sobre mim
             </v-card-title>
-            <v-card
-              class="bg-cor_card_login mx-5  elevation-0"
-              v-text="loja.aboutMe"
-            ></v-card>
+            <v-card class="bg-cor_card_login mx-5 elevation-0" v-text="loja.aboutMe"></v-card>
           </v-card>
         </v-row>
-
-        <v-card class="mx-auto h-auto elevation-0 bg-cor_card_login border rounded-xl" max-width="1000">
+        <v-card
+          class="mx-auto h-auto elevation-0 bg-cor_card_login border rounded-xl"
+          max-width="1000"
+        >
           <v-container fluid>
-            <v-row v-if="products" dense class=" h-100">
-              <v-col v-for="product in products" :key="product.id" cols="12" md="4" sm="6" lg="4" class="">
+            <v-row dense class="h-100">
+              <v-col
+                v-for="product in products"
+                :key="product.id"
+                cols="12"
+                md="4"
+                sm="6"
+                lg="4"
+              >
                 <store-product :loja="loja" :product="product">
                   <v-card class="rounded-xl elevation-2 card-hover">
-                    <v-img 
+                    <v-img
                       :src="product.foto"
                       class="align-center"
                       gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
@@ -69,15 +70,15 @@
                   </v-card>
                 </store-product>
               </v-col>
+              <!-- Botão de adicionar produto -->
               <v-col cols="12" md="4" sm="6" lg="4">
-                <v-btn class=" elevation-0" :ripple="false" href="/add_produto">
-                  <img
-                      src="../img/add_loja.png"
-                      class="align-center"
-                      width="100%"
-                      cover
-                  />
-                </v-btn>
+                
+              </v-col>
+            </v-row>
+            <!-- Exibir mensagem caso não haja produtos -->
+            <v-row v-if="!products || products.length === 0">
+              <v-col cols="12">
+                <p class="text-center text-cor_barra">Nenhum produto encontrado.</p>
               </v-col>
             </v-row>
           </v-container>
@@ -89,25 +90,36 @@
 
 <script setup lang="ts">
 import { useSupabase } from '~/composables/useSupabase';
-import { useRoute } from 'vue-router';
-import { ref, computed, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { ref, onMounted } from 'vue';
 
 const route = useRoute();
+const router = useRouter();
 const supabase = new useSupabase();
 const loja = ref(null);
 const products = ref([]);
 
+// Carregar dados da loja e produtos ao montar o componente
 onMounted(async () => {
-  if (route.params.id) {
-    loja.value = await supabase.getLoja(route.params.id);
-    products.value = await supabase.getProdutos(route.params.id);
+  try {
+    if (route.params.id) {
+      loja.value = await supabase.getLoja(route.params.id);
+      products.value = await supabase.getProdutos(route.params.id);
+    }
+  } catch (error) {
+    console.error('Erro ao carregar dados:', error);
   }
 });
 
+// Função para abrir detalhes do produto
 function abrirProduto(product) {
-  // Lógica para abrir o produto (exibir detalhes, redirecionar, etc.)
+  console.log('Abrir produto:', product); // Substituir com lógica de detalhes do produto
 }
 
+// Função para adicionar um novo produto
+function adicionarProduto() {
+  router.push({ path: `/loja/${route.params.id}/add_produto` }); // Usar o novo formato
+}
 </script>
 
 <style scoped>

@@ -212,6 +212,38 @@ export class useSupabase {
       return { success: false, message: 'Erro inesperado ao criar usuário.' };
     }
   }
+  async updateUserProfile(
+    userId: string,
+    name?: string,
+    username?: string,
+    email?: string,
+    password?: string
+  ): Promise<{ success: boolean; message: string }> {
+    try {
+      const updates: { [key: string]: string | undefined } = {};
+  
+      if (name) updates.name = name;
+      if (username) updates.username = username;
+      if (email) updates.email = email;
+      if (password) updates.password = password;
+  
+      const { data, error } = await this.supabase
+        .from('users') // Tabela de usuários
+        .update(updates) // Atualizando os dados
+        .eq('id', userId); // Identifica o usuário a ser atualizado
+  
+      if (error) {
+        console.error('Erro ao atualizar usuário:', error);
+        return { success: false, message: 'Erro ao atualizar usuário.' };
+      }
+  
+      console.log('Usuário atualizado com sucesso:', data);
+      return { success: true, message: 'Usuário atualizado com sucesso!' };
+    } catch (error) {
+      console.error('Erro inesperado ao atualizar usuário:', error);
+      return { success: false, message: 'Erro inesperado ao atualizar usuário.' };
+    }
+  }
+  
 }
   
-

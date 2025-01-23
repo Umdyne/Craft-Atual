@@ -11,12 +11,12 @@
                     
                     <v-col class="justify-center d-flex" cols="12" md="3">
 
-                    <div>
+                    <div class="flex justify-center">
                         <v-img
                         :src="usuario.foto"
                         height="200"
                         width="200"
-                        class="rounded-circle  mb-5"
+                        class="rounded-circle bg-white  mb-5"
                         aspect-ratio="1/1"
                         cover
                         >
@@ -26,9 +26,10 @@
                         <p class="text-black text-center my-2 text-h5">
                             {{ usuario.name }}
                         </p>
-                        <v-btn color="cor_marron_claro my-5" class="mx-auto rounded-xl justify-center elevation-10">
+                        
+                        <v-btn to="/editar_perfil" color="cor_marron_claro my-5" class="mx-auto rounded-xl justify-center ml-5  elevation-10">
                             Editar Perfil
-                    </v-btn>
+                        </v-btn>
                     </div>
                    
                     </v-col>

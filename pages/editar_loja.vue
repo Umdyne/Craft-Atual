@@ -6,7 +6,7 @@
           <v-btn href="/perfil" class="bg-transparent elevation-0">
             Voltar
           </v-btn>
-          <p class="text-cor_mini_menu my-2 text-h4 text-center mb-8">ADICIONAR LOJA</p>
+          <p class="text-cor_mini_menu my-2 text-h4 text-center mb-8">EDITAR LOJA</p>
           <v-row class="justify-center rounded-xl bg-cor_card_login w-100">
             <v-col cols="3" class="justify-center">
               <v-btn height="200" width="200" class="rounded-circle">
@@ -20,7 +20,7 @@
                 ></v-img>
               </v-btn>
               <v-btn color="cor_marron_claro my-5 ml-2" class="rounded-xl elevation-10">
-                Adicionar Perfil
+                Atualizar Perfil
               </v-btn>
             </v-col>
             <v-col cols="8">
@@ -48,12 +48,12 @@
                 maxlength="290"
               ></v-textarea>
               <v-btn
-                @click="cadastrarLoja"
+                @click="atualizarLoja"
                 class="justify-center bg-cor_marron_escuro rounded-xl w-75 ml-12 my-5"
                 color="cor_fundo"
                 variant="outlined"
               >
-                CADASTRAR
+                ATUALIZAR
               </v-btn>
             </v-col>
           </v-row>
@@ -74,9 +74,9 @@
   const selectedCategorie = ref(null);
   const supabase = new useSupabase();
   const router = useRouter();
-  const userId = ref(''); // Inicialize como uma string vazia
+  const storeId = ref('');
+  const userId = ref('');
   
-  // Função para carregar categorias e definir o ID do usuário
   onMounted(async () => {
     const categorias = await supabase.getCategorias();
     if (categorias) {
@@ -84,18 +84,26 @@
     }
     const userIdStored = localStorage.getItem('userId');
     if (userIdStored) {
-      userId.value = userIdStored; // Garantir que userId tenha um valor válido
+      userId.value = userIdStored;
+    }
+    // Carregar os dados da loja existente
+    const storeData = await supabase.getStoreByUserId(userId.value);
+    if (storeData) {
+      storeId.value = storeData.id;
+      name.value = storeData.name;
+      selectedCategorie.value = storeData.categorie;
+      contact.value = storeData.contact;
+      description.value = storeData.description;
     }
   });
   
-  // Função para cadastrar a loja vinculada ao usuário que a criou
-  async function cadastrarLoja() {
-    if (name.value && selectedCategorie.value && contact.value && description.value && userId.value) {
-      const success = await supabase.createStore(name.value, selectedCategorie.value, contact.value, description.value, userId.value);
+  async function atualizarLoja() {
+    if (name.value && selectedCategorie.value && contact.value && description.value && userId.value && storeId.value) {
+      const success = await supabase.updateStore(storeId.value, name.value, selectedCategorie.value, contact.value, description.value, userId.value);
       if (success) {
         router.push("/perfil");
       } else {
-        console.error('Erro ao criar a loja');
+        console.error('Erro ao atualizar a loja');
       }
     } else {
       console.warn('Por favor, preencha todos os campos obrigatórios.');
