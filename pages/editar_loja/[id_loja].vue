@@ -76,6 +76,7 @@
   const router = useRouter();
   const storeId = ref('');
   const userId = ref('');
+  const route = useRoute();
   
   onMounted(async () => {
     const categorias = await supabase.getCategorias();
@@ -98,8 +99,10 @@
   });
   
   async function atualizarLoja() {
-    if (name.value && selectedCategorie.value && contact.value && description.value && userId.value && storeId.value) {
-      const success = await supabase.updateStore(storeId.value, name.value, selectedCategorie.value, contact.value, description.value, userId.value);
+   
+    if (name.value && selectedCategorie.value && contact.value && description.value && userId.value && route.params.id_loja) {
+     
+      const success = await supabase.updateStore(route.params.id_loja, name.value, selectedCategorie.value, contact.value, description.value, userId.value);
       if (success) {
         router.push("/perfil");
       } else {
@@ -108,6 +111,7 @@
     } else {
       console.warn('Por favor, preencha todos os campos obrigatórios.');
     }
+
   }
   </script>
   

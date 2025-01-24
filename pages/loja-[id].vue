@@ -22,7 +22,7 @@
             <p class="text-black text-h6">{{ loja.location }}</p>
             <p class="">Artista: </p>
             <p class="font-weight-bold mt-n1">{{ loja.socialWeb }}</p>
-            <v-btn class="bg-transparent mx-n5 elevation-0">
+            <v-btn @click="editarLoja" class="bg-transparent mx-n5 elevation-0">
               Editar Loja
             </v-btn>
           </v-col>
@@ -72,7 +72,9 @@
               </v-col>
               <!-- Botão de adicionar produto -->
               <v-col cols="12" md="4" sm="6" lg="4">
-                
+                <v-btn @click="adicionarProduto" class="justify-center bg-cor_fundo rounded-xl w-75 ml-12 my-5">
+                  Adicionar Produto
+                </v-btn>
               </v-col>
             </v-row>
             <!-- Exibir mensagem caso não haja produtos -->
@@ -118,7 +120,12 @@ function abrirProduto(product) {
 
 // Função para adicionar um novo produto
 function adicionarProduto() {
-  router.push({ path: `/loja/${route.params.id}/add_produto` }); // Usar o novo formato
+  router.push({ path: `/add_produto/${route.params.id}` }); // Usar o novo formato
+}
+
+// Função para editar loja
+function editarLoja() {
+  router.push({ path: `/editar_loja/${route.params.id}` });
 }
 </script>
 

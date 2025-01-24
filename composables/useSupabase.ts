@@ -176,8 +176,6 @@ export class useSupabase {
     return data || [];
   }
   
-
-
   async createUser(
     name: string,
     username: string,
@@ -212,6 +210,7 @@ export class useSupabase {
       return { success: false, message: 'Erro inesperado ao criar usuário.' };
     }
   }
+
   async updateUserProfile(
     userId: string,
     name?: string,
@@ -244,6 +243,71 @@ export class useSupabase {
       return { success: false, message: 'Erro inesperado ao atualizar usuário.' };
     }
   }
+
+  async getStoreByUserId(userId: string) {
+    const { data, error } = await this.supabase
+      .from('stores')
+      .select('*')
+      .eq('user_id', userId)
+      .single();
+
+    if (error) {
+      console.error('Erro ao buscar loja:', error);
+      return null;
+    }
+
+    return data;
+  }
+
+  async updateStore(
+    storeId: string,
+    name: string,
+    categorieId: string,
+    contact: string,
+    description: string,
+    userId: string
+  ): Promise<boolean> {
+    const { data, error } = await this.supabase
+      .from('stores')
+      .update({
+        name: name,
+        categorie: categorieId,
+        contact: contact,
+        description: description,
+        user: userId
+      })
+      .eq('id', storeId);
+
+    if (error) {
+      console.error('Erro ao atualizar a loja:', error);
+      return false;
+    }
+
+    console.log('Loja atualizada com sucesso:', data);
+    return true;
+  }
+
+  async createProduct(
+    name: string,
+    value: string,
+    description: string,
+    lojaId: string
+  ): Promise<boolean> {
+    try {
+      const { data, error } = await this.supabase
+        .from('product') // Tabela de Produtos
+        .insert([{ name, value, description, loja: lojaId }]); // Inserindo os dados
   
+      if (error) {
+        console.error('Erro ao criar Produto:', error);
+        return false; // Indica falha
+      }
+  
+      console.log('Produto criado com sucesso:', data);
+      return true; // Indica sucesso
+    } catch (error) {
+      console.error('Erro inesperado ao criar produto:', error);
+      return false; // Indica falha
+    }
+  }
 }
-  
