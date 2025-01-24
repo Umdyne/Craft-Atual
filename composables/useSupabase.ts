@@ -310,4 +310,29 @@ export class useSupabase {
       return false; // Indica falha
     }
   }
+  // Função para excluir produto
+  async deleteProduct(productId: string, userId: string): Promise<{ success: boolean; message: string }> {
+    try {
+      const { data, error } = await this.supabase
+        .from('product')
+        .delete()
+        .eq('id', productId)
+        .eq('user', userId);
+  
+      if (error) {
+        console.error('Erro ao excluir produto:', error);
+        return { success: false, message: 'Erro ao excluir o produto.' }; // Retorna um objeto com sucesso e mensagem
+      }
+  
+      if (!data || data.length === 0) {
+        return { success: false, message: 'Produto não encontrado ou usuário não autorizado.' };
+      }
+  
+      return { success: true, message: 'Produto excluído com sucesso!' }; // Retorna sucesso e mensagem
+    } catch (error) {
+      console.error('Erro inesperado ao excluir o produto:', error);
+      return { success: false, message: 'Erro inesperado ao excluir o produto.' };
+    }
+  }
+  
 }

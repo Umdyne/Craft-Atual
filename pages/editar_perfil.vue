@@ -156,7 +156,7 @@
     if (file) {
       const userId = localStorage.getItem('userId');
       const filePath = `fotos/${userId}-${file.name}`;
-      const { success, message, url } = await supabase.uploadPhoto(file, filePath);
+      const { success, message, url } = await supabase.uploadProfilePicture(file, filePath);
       if (success && url) {
         // Atualiza a foto de perfil do usuário e salva o endereço na tabela dos usuários
         const updates = { foto: filePath };

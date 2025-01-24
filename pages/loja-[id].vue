@@ -22,7 +22,7 @@
             <p class="text-black text-h6">{{ loja.location }}</p>
             <p class="">Artista: </p>
             <p class="font-weight-bold mt-n1">{{ loja.socialWeb }}</p>
-            <v-btn @click="editarLoja" class="bg-transparent mx-n5 elevation-0">
+            <v-btn v-if="isOwner" @click="editarLoja" class="bg-transparent mx-n5 elevation-0">
               Editar Loja
             </v-btn>
           </v-col>
@@ -49,7 +49,7 @@
                 sm="6"
                 lg="4"
               >
-                <store-product :loja="loja" :product="product">
+                <store-product :loja="loja" :product="product" @delete="deleteProduct(product.id)">
                   <v-card class="rounded-xl elevation-2 card-hover">
                     <v-img
                       :src="product.foto"
@@ -70,8 +70,8 @@
                   </v-card>
                 </store-product>
               </v-col>
-              <!-- Botão de adicionar produto -->
-              <v-col cols="12" md="4" sm="6" lg="4">
+              <!-- Botão de adicionar produto (condicionado ao dono da loja) -->
+              <v-col v-if="isOwner" cols="12" md="4" sm="6" lg="4">
                 <v-btn @click="adicionarProduto" class="justify-center bg-cor_fundo rounded-xl w-75 ml-12 my-5">
                   Adicionar Produto
                 </v-btn>
@@ -100,6 +100,8 @@ const router = useRouter();
 const supabase = new useSupabase();
 const loja = ref(null);
 const products = ref([]);
+const isOwner = ref(false);
+const userId = ref('');
 
 // Carregar dados da loja e produtos ao montar o componente
 onMounted(async () => {
@@ -107,6 +109,13 @@ onMounted(async () => {
     if (route.params.id) {
       loja.value = await supabase.getLoja(route.params.id);
       products.value = await supabase.getProdutos(route.params.id);
+
+      // Obter userId do localStorage
+      const userIdStored = localStorage.getItem('userId');
+      if (userIdStored) {
+        userId.value = userIdStored;
+        isOwner.value = loja.value && loja.value.user === userId.value;
+      }
     }
   } catch (error) {
     console.error('Erro ao carregar dados:', error);
@@ -127,6 +136,26 @@ function adicionarProduto() {
 function editarLoja() {
   router.push({ path: `/editar_loja/${route.params.id}` });
 }
+
+// Função para deletar produto
+async function deleteProduct(productId: string) {
+  const userId = localStorage.getItem('userId');
+  if (!userId) {
+    console.error('Usuário não autenticado.');
+    return;
+  }
+
+  const result = await supabase.deleteProduct(productId, userId);
+
+  if (result.success) {
+    console.log(result.message);
+    // Atualize a interface ou liste novamente os produtos
+    products.value = products.value.filter(product => product.id !== productId); // Remove o produto da lista
+  } else {
+    console.error(result.message);
+  }
+}
+
 </script>
 
 <style scoped>
